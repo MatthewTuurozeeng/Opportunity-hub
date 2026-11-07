@@ -5,6 +5,10 @@ node_modules/
 .env
 .env.*
 !.env.example
+# The client .env is committed. It may only hold public values (VITE_*),
+# because Vite builds them into the browser bundle anyway.
+# Never put secrets such as the Supabase service-role key in it.
+!client/.env
 
 # Build output
 dist/

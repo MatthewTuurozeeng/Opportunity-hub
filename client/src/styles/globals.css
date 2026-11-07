@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+
+/*
+ * OpportunityHub design system
+ *
+ * 1. Brand palette   – raw colors from the README colour palette (section 4.2).
+ * 2. Semantic tokens – what components use (primary, background, border, ...).
+ * 3. Typography      – size scale from the README typography table (section 4.4).
+ *
+ * Components should use semantic tokens (e.g. `bg-primary`, `text-muted-foreground`)
+ * and only reach for brand colors for intentional accents (e.g. `text-golden-yellow`).
+ */
+
+@theme {
+  /* Brand palette */
+  --color-forest-green: #285943;
+  --color-deep-green: #1e4433;
+  --color-leaf-green: #78a887;
+  --color-warm-ivory: #fafaf5;
+  --color-pure-white: #ffffff;
+  --color-soft-sage: #eaf1e9;
+  --color-terracotta: #c87557;
+  --color-golden-yellow: #e6b653;
+  --color-charcoal: #26332d;
+  --color-muted-grey: #738078;
+  --color-border-grey: #e3e8e1;
+
+  /* Typography scale */
+  --text-page-title: 1.5rem;
+  --text-page-title--line-height: 2rem;
+  --text-section-heading: 1.125rem;
+  --text-section-heading--line-height: 1.75rem;
+  --text-card-title: 0.9375rem;
+  --text-card-title--line-height: 1.375rem;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.375rem;
+  --text-supporting: 0.75rem;
+  --text-supporting--line-height: 1rem;
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+:root {
+  --background: var(--color-warm-ivory);
+  --foreground: var(--color-charcoal);
+  --card: var(--color-pure-white);
+  --card-foreground: var(--color-charcoal);
+  --popover: var(--color-pure-white);
+  --popover-foreground: var(--color-charcoal);
+  --primary: var(--color-forest-green);
+  --primary-hover: var(--color-deep-green);
+  --primary-foreground: var(--color-pure-white);
+  --secondary: var(--color-soft-sage);
+  --secondary-foreground: var(--color-deep-green);
+  --muted: #f2f4ef;
+  --muted-foreground: var(--color-muted-grey);
+  --accent: var(--color-soft-sage);
+  --accent-foreground: var(--color-deep-green);
+  --destructive: #b42318;
+  --border: var(--color-border-grey);
+  --input: var(--color-border-grey);
+  --ring: var(--color-forest-green);
+  --radius: 0.5rem;
+
+  --sidebar: var(--color-pure-white);
+  --sidebar-foreground: var(--color-charcoal);
+  --sidebar-accent: var(--color-soft-sage);
+  --sidebar-accent-foreground: var(--color-forest-green);
+  --sidebar-border: var(--color-border-grey);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-body text-foreground antialiased;
+  }
+}
