@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { AddApplicationButton } from '@/components/shared/AddApplicationButton'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { SignOutButton } from '@/features/auth/components/SignOutButton'
 
 import { SidebarNavigation } from './SidebarNavigation'
 
@@ -23,6 +24,9 @@ export function MobileNavigation() {
         </SheetHeader>
         <AddApplicationButton className="w-full" onClick={closeNavigation} />
         <SidebarNavigation onNavigate={closeNavigation} />
+        <div className="mt-auto pb-4">
+          <SignOutButton />
+        </div>
       </SheetContent>
     </Sheet>
   )

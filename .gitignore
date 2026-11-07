@@ -17,8 +17,9 @@ build/
 # macOS
 .DS_Store
 
-# Logs
-*.log
+# Logs and temporary files
+*.log 
+*.tmp
 
 # Editor
 .vscode/
