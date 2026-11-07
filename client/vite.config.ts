@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
@@ -12,6 +13,10 @@ export default defineConfig({
     strictPort: true,
     // Open the app in the system's default browser on `npm run dev`.
     open: true,
+  },
+  test: {
+    environment: 'node',
+    include: ['src/**/*.test.{ts,tsx}'],
   },
   resolve: {
     alias: {

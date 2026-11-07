@@ -1,4 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
+import { Toaster } from 'sonner'
 
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthProvider } from '@/features/auth/context/AuthProvider'
@@ -11,6 +12,7 @@ export function App() {
       <AuthProvider>
         <TooltipProvider>
           <AppRouter />
+          <Toaster position="top-right" richColors closeButton />
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>

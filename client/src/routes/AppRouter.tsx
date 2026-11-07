@@ -2,7 +2,9 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 
 import { MainLayout } from '@/components/layout/MainLayout'
 import { AnalyticsPage } from '@/features/analytics/pages/AnalyticsPage'
+import { ApplicationDetailPage } from '@/features/applications/pages/ApplicationDetailPage'
 import { ApplicationsPage } from '@/features/applications/pages/ApplicationsPage'
+import { EditApplicationPage } from '@/features/applications/pages/EditApplicationPage'
 import { NewApplicationPage } from '@/features/applications/pages/NewApplicationPage'
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute'
 import { LoginPage } from '@/features/auth/pages/LoginPage'
@@ -30,6 +32,8 @@ const router = createBrowserRouter([
           { path: ROUTE_PATHS.DASHBOARD, element: <DashboardPage /> },
           { path: ROUTE_PATHS.APPLICATIONS, element: <ApplicationsPage /> },
           { path: ROUTE_PATHS.NEW_APPLICATION, element: <NewApplicationPage /> },
+          { path: ROUTE_PATHS.APPLICATION_DETAIL, element: <ApplicationDetailPage /> },
+          { path: ROUTE_PATHS.EDIT_APPLICATION, element: <EditApplicationPage /> },
           { path: ROUTE_PATHS.DOCUMENTS, element: <DocumentsPage /> },
           { path: ROUTE_PATHS.COMMUNICATIONS, element: <CommunicationsPage /> },
           { path: ROUTE_PATHS.CALENDAR, element: <CalendarPage /> },

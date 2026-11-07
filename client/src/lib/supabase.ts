@@ -1,5 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
+import type { Database } from '@/types/database.types'
+
 import { env, isEnvConfigured, missingEnvVariables } from './env'
 
 if (!isEnvConfigured) {
@@ -7,13 +9,11 @@ if (!isEnvConfigured) {
 }
 
 /**
- * The single Supabase client for the app. Uses the publishable key only;
+ * The single, fully typed Supabase client for the app. Uses the publishable key only;
  * the service-role key must never be used in frontend code.
- *
- * Once the database is linked, generate types with `npm run db:types` and pass
- * `Database` from `@/types/database.types` as the generic: createClient<Database>(...).
+ * Regenerate `Database` types with `npm run db:types` after schema changes.
  */
-export const supabase = createClient(env.supabaseUrl, env.supabasePublishableKey, {
+export const supabase = createClient<Database>(env.supabaseUrl, env.supabasePublishableKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,

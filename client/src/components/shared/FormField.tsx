@@ -1,35 +1,34 @@
 import type { ComponentProps } from 'react'
 
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+
+import { FormControl } from './FormControl'
 
 interface FormFieldProps extends ComponentProps<typeof Input> {
   id: string
   label: string
   errorMessage?: string
   hint?: string
+  isRequired?: boolean
+  /** Applied to the field wrapper (label + input + messages). */
+  className?: string
+  inputClassName?: string
 }
 
-/** Labelled input with accessible hint and error text. */
-export function FormField({ id, label, errorMessage, hint, ...inputProps }: FormFieldProps) {
-  const hintId = hint ? `${id}-hint` : undefined
-  const errorId = errorMessage ? `${id}-error` : undefined
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
-
+/** Labelled text input with accessible hint and error text. */
+export function FormField({
+  id,
+  label,
+  errorMessage,
+  hint,
+  isRequired,
+  className,
+  inputClassName,
+  ...inputProps
+}: FormFieldProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} aria-invalid={Boolean(errorMessage)} aria-describedby={describedBy} {...inputProps} />
-      {hint && !errorMessage && (
-        <p id={hintId} className="text-supporting text-muted-foreground">
-          {hint}
-        </p>
-      )}
-      {errorMessage && (
-        <p id={errorId} className="text-supporting text-destructive">
-          {errorMessage}
-        </p>
-      )}
-    </div>
+    <FormControl id={id} label={label} hint={hint} errorMessage={errorMessage} isRequired={isRequired} className={className}>
+      {(controlProps) => <Input className={inputClassName} {...controlProps} {...inputProps} />}
+    </FormControl>
   )
 }
