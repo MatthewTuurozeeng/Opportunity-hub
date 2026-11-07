@@ -367,30 +367,29 @@ Use solid colors, subtle borders, restrained shadows and consistent spacing.
 
 ## 4.2 Color Palette
 
-The primary visual identity should be based on warm neutrals and natural greens, with restrained accent colors.
+The primary visual identity is based on a deep midnight navy with cool neutrals and a golden accent.
 
 | Color | Hex Code | Usage |
 |---|---|---|
-| Forest Green | `#285943` | Primary brand color, navigation highlights and primary actions. |
-| Deep Green | `#1E4433` | Hover states and strong emphasis. |
-| Leaf Green | `#78A887` | Secondary highlights and positive indicators. |
-| Warm Ivory | `#FAFAF5` | Main application background. |
+| Midnight Navy | `#0F1B2D` | Primary brand color, primary actions, headings and focus rings. |
+| Navy Hover | `#1E2F4D` | Hover states for primary actions. |
+| Soft Sky | `#E8EEF8` | Selected states, active navigation and subtle highlights. |
+| Cloud White | `#F6F8FB` | Main application background. |
 | Pure White | `#FFFFFF` | Cards, panels, forms and modal backgrounds. |
-| Soft Sage | `#EAF1E9` | Selected states and subtle highlights. |
-| Terracotta | `#C87557` | Selected secondary actions and restrained emphasis. |
-| Golden Yellow | `#E6B653` | Deadline warnings and attention indicators. |
-| Charcoal | `#26332D` | Main text. |
-| Muted Grey | `#738078` | Secondary text and metadata. |
-| Border Grey | `#E3E8E1` | Dividers and component borders. |
+| Ink | `#1A2436` | Main body text. |
+| Slate Grey | `#5E6B80` | Secondary text and metadata. |
+| Border Mist | `#E2E7EF` | Dividers and component borders. |
+| Golden Yellow | `#E6B653` | Brand accent, deadline warnings and attention indicators. |
+| Success Green | `#1F7A4D` | Successful outcomes only. |
+
+**Navigation icon colors:** each main navigation item has its own bright icon on a tinted chip (blue, violet, amber, cyan, rose, emerald, orange and slate) so sections are easy to recognize at a glance.
 
 **Color usage guidelines:**
-- Forest green should be the primary interactive color.
-- Warm ivory should provide a comfortable background.
-- White should be used for content surfaces.
-- Leaf green should be used sparingly for positive states.
-- Terracotta should be used for limited secondary emphasis.
-- Golden yellow should communicate deadlines and warnings.
-- Red should be reserved for destructive actions and errors.
+- Midnight navy is the primary interactive color and the heading color.
+- Cloud white provides a calm background; white is used for content surfaces.
+- Body text uses ink, and secondary text uses slate grey (both meet WCAG AA contrast).
+- Golden yellow communicates deadlines and warnings.
+- Green is reserved for successful outcomes, and red for destructive actions and errors.
 
 Do not use every accent color on every screen.
 
@@ -404,7 +403,7 @@ Do not use every accent color on every screen.
 | Shortlisted | Green |
 | Interview | Purple |
 | Assessment | Amber |
-| Successful | Forest green |
+| Successful | Success green |
 | Unsuccessful | Muted red |
 | Withdrawn | Grey |
 | No Response | Muted orange |

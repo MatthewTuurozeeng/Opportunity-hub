@@ -6,7 +6,7 @@
 /*
  * OpportunityHub design system
  *
- * 1. Brand palette   – raw colors from the README colour palette (section 4.2).
+ * 1. Brand palette   – midnight navy with a golden accent (README section 4.2).
  * 2. Semantic tokens – what components use (primary, background, border, ...).
  * 3. Typography      – size scale from the README typography table (section 4.4).
  *
@@ -16,17 +16,16 @@
 
 @theme {
   /* Brand palette */
-  --color-forest-green: #285943;
-  --color-deep-green: #1e4433;
-  --color-leaf-green: #78a887;
-  --color-warm-ivory: #fafaf5;
+  --color-midnight-navy: #0f1b2d;
+  --color-navy-hover: #1e2f4d;
+  --color-soft-sky: #e8eef8;
+  --color-cloud-white: #f6f8fb;
   --color-pure-white: #ffffff;
-  --color-soft-sage: #eaf1e9;
-  --color-terracotta: #c87557;
+  --color-ink: #1a2436;
+  --color-slate-grey: #5e6b80;
+  --color-border-mist: #e2e7ef;
   --color-golden-yellow: #e6b653;
-  --color-charcoal: #26332d;
-  --color-muted-grey: #738078;
-  --color-border-grey: #e3e8e1;
+  --color-success-green: #1f7a4d;
 
   /* Typography scale */
   --text-page-title: 1.5rem;
@@ -47,6 +46,7 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-heading: var(--heading);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -77,32 +77,33 @@
 }
 
 :root {
-  --background: var(--color-warm-ivory);
-  --foreground: var(--color-charcoal);
+  --background: var(--color-cloud-white);
+  --foreground: var(--color-ink);
+  --heading: var(--color-midnight-navy);
   --card: var(--color-pure-white);
-  --card-foreground: var(--color-charcoal);
+  --card-foreground: var(--color-ink);
   --popover: var(--color-pure-white);
-  --popover-foreground: var(--color-charcoal);
-  --primary: var(--color-forest-green);
-  --primary-hover: var(--color-deep-green);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-midnight-navy);
+  --primary-hover: var(--color-navy-hover);
   --primary-foreground: var(--color-pure-white);
-  --secondary: var(--color-soft-sage);
-  --secondary-foreground: var(--color-deep-green);
-  --muted: #f2f4ef;
-  --muted-foreground: var(--color-muted-grey);
-  --accent: var(--color-soft-sage);
-  --accent-foreground: var(--color-deep-green);
+  --secondary: var(--color-soft-sky);
+  --secondary-foreground: var(--color-midnight-navy);
+  --muted: #eff2f7;
+  --muted-foreground: var(--color-slate-grey);
+  --accent: var(--color-soft-sky);
+  --accent-foreground: var(--color-midnight-navy);
   --destructive: #b42318;
-  --border: var(--color-border-grey);
-  --input: var(--color-border-grey);
-  --ring: var(--color-forest-green);
+  --border: var(--color-border-mist);
+  --input: var(--color-border-mist);
+  --ring: var(--color-midnight-navy);
   --radius: 0.5rem;
 
   --sidebar: var(--color-pure-white);
-  --sidebar-foreground: var(--color-charcoal);
-  --sidebar-accent: var(--color-soft-sage);
-  --sidebar-accent-foreground: var(--color-forest-green);
-  --sidebar-border: var(--color-border-grey);
+  --sidebar-foreground: var(--color-ink);
+  --sidebar-accent: var(--color-soft-sky);
+  --sidebar-accent-foreground: var(--color-midnight-navy);
+  --sidebar-border: var(--color-border-mist);
 }
 
 @layer base {
@@ -116,5 +117,12 @@
 
   body {
     @apply bg-background text-body text-foreground antialiased;
+  }
+
+  /* Headings use the deep navy so they stand out from body text. */
+  h1,
+  h2,
+  h3 {
+    @apply text-heading;
   }
 }

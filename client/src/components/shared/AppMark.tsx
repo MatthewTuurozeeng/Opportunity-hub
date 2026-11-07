@@ -8,7 +8,7 @@ interface AppMarkProps {
 export function AppMark({ className }: AppMarkProps) {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" className={cn('size-8 shrink-0', className)}>
-      <rect width="32" height="32" rx="8" className="fill-forest-green" />
+      <rect width="32" height="32" rx="8" className="fill-midnight-navy" />
       <g
         transform="translate(1 -2)"
         fill="none"
