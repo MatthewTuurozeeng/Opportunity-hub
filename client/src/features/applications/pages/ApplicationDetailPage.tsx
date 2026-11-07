@@ -1,4 +1,4 @@
-import { FileText, Mail, Pencil } from 'lucide-react'
+import { Mail, Pencil } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 
 import { BackLink } from '@/components/shared/BackLink'
@@ -7,6 +7,7 @@ import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ApplicationDocumentsPanel } from '@/features/documents/components/ApplicationDocumentsPanel'
 import { buildEditApplicationPath, ROUTE_PATHS } from '@/routes/routePaths'
 
 import { ApplicationNotFound } from '../components/ApplicationNotFound'
@@ -75,11 +76,7 @@ export function ApplicationDetailPage() {
         </TabsContent>
 
         <TabsContent value="documents" className="pt-4">
-          <EmptyState
-            icon={FileText}
-            title="Documents are coming soon"
-            description="You will be able to attach CVs, letters and other documents from your library to this application."
-          />
+          <ApplicationDocumentsPanel applicationId={application.id} />
         </TabsContent>
 
         <TabsContent value="communication" className="pt-4">
