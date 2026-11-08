@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ApplicationCommunicationsPanel } from '@/features/communications/components/ApplicationCommunicationsPanel'
 import { ApplicationDocumentsPanel } from '@/features/documents/components/ApplicationDocumentsPanel'
 import { ApplicationEventsPanel } from '@/features/events/components/ApplicationEventsPanel'
+import { ApplicationNotesPanel } from '@/features/notes/components/ApplicationNotesPanel'
 import { buildEditApplicationPath, ROUTE_PATHS } from '@/routes/routePaths'
 
 import { ApplicationActivityTimeline } from '../components/ApplicationActivityTimeline'
@@ -86,22 +87,7 @@ export function ApplicationDetailPage() {
         </TabsContent>
 
         <TabsContent value="notes" className="pt-4">
-          <section className="rounded-lg border border-border bg-card p-5">
-            <h2 className="mb-3 text-section-heading font-semibold">Personal notes</h2>
-            {application.notes ? (
-              <p className="text-body whitespace-pre-line">{application.notes}</p>
-            ) : (
-              <p className="text-body text-muted-foreground">
-                No notes yet.{' '}
-                <Link
-                  to={buildEditApplicationPath(application.id)}
-                  className="font-medium text-primary underline-offset-4 hover:underline"
-                >
-                  Add notes
-                </Link>
-              </p>
-            )}
-          </section>
+          <ApplicationNotesPanel applicationId={application.id} personalNotes={application.notes} />
         </TabsContent>
       </Tabs>
     </>

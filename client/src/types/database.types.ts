@@ -414,6 +414,54 @@ export type Database = {
           },
         ]
       }
+      notes: {
+        Row: {
+          application_id: string | null
+          category: Database["public"]["Enums"]["note_category"]
+          content: string
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          application_id?: string | null
+          category?: Database["public"]["Enums"]["note_category"]
+          content: string
+          created_at?: string
+          id?: string
+          title: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          application_id?: string | null
+          category?: Database["public"]["Enums"]["note_category"]
+          content?: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notes_application_id_user_id_fkey"
+            columns: ["application_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id", "user_id"]
+          },
+          {
+            foreignKeyName: "notes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunities: {
         Row: {
           application_url: string | null
@@ -566,6 +614,16 @@ export type Database = {
         | "identification_document"
         | "application_form"
         | "other"
+      note_category:
+        | "interview_preparation"
+        | "interview_questions"
+        | "interview_reflection"
+        | "feedback_received"
+        | "strengths"
+        | "areas_for_improvement"
+        | "lessons_learned"
+        | "follow_up"
+        | "general"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -742,6 +800,17 @@ export const Constants = {
         "identification_document",
         "application_form",
         "other",
+      ],
+      note_category: [
+        "interview_preparation",
+        "interview_questions",
+        "interview_reflection",
+        "feedback_received",
+        "strengths",
+        "areas_for_improvement",
+        "lessons_learned",
+        "follow_up",
+        "general",
       ],
     },
   },

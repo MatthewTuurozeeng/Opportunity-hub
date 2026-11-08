@@ -1,25 +1,16 @@
 import { CalendarPlus, CalendarRange } from 'lucide-react'
-import { type ReactNode, useMemo, useState } from 'react'
-import { toast } from 'sonner'
+import { type ReactNode, useMemo } from 'react'
 
-import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { Button } from '@/components/ui/button'
 
-import { useDeleteApplicationEvent, useSetApplicationEventCompleted } from '../hooks/useEventMutations'
+import { useEventActions } from '../hooks/useEventActions'
 import { useApplicationEvents } from '../hooks/useEventQueries'
 import type { ApplicationEvent } from '../types/event.types'
 import { splitEvents } from '../utils/eventTiming'
-import { EventFormDialog } from './EventFormDialog'
 import { EventListItem } from './EventListItem'
-
-interface FormDialogState {
-  /** Remounts the dialog per opening so the form starts fresh. */
-  key: number
-  event?: ApplicationEvent
-}
 
 interface EventGroupProps {
   title: string
@@ -47,41 +38,12 @@ interface ApplicationEventsPanelProps {
 /** Deadlines, interviews, assessments and reminders for one application. */
 export function ApplicationEventsPanel({ applicationId }: ApplicationEventsPanelProps) {
   const { data: events, isLoading, error, refetch } = useApplicationEvents(applicationId)
-  const setCompleted = useSetApplicationEventCompleted()
-  const deleteEvent = useDeleteApplicationEvent()
-  const [formDialog, setFormDialog] = useState<FormDialogState | null>(null)
-  const [eventToDelete, setEventToDelete] = useState<ApplicationEvent | null>(null)
+  const actions = useEventActions({ fixedApplicationId: applicationId })
 
   const { upcoming, past } = useMemo(() => splitEvents(events ?? []), [events])
 
-  function handleToggleCompleted(event: ApplicationEvent) {
-    const isCompleted = !event.is_completed
-    setCompleted.mutate(
-      { eventId: event.id, isCompleted },
-      {
-        onSuccess: () => toast.success(isCompleted ? 'Event marked as done.' : 'Event marked as not done.'),
-        onError: (updateError) => toast.error(updateError.message),
-      },
-    )
-  }
-
-  function handleConfirmDelete() {
-    if (!eventToDelete) return
-
-    deleteEvent.mutate(eventToDelete.id, {
-      onSuccess: () => {
-        toast.success('Event deleted.')
-        setEventToDelete(null)
-      },
-      onError: (deleteError) => {
-        toast.error(deleteError.message)
-        setEventToDelete(null)
-      },
-    })
-  }
-
   const addButton = (
-    <Button onClick={() => setFormDialog({ key: Date.now() })}>
+    <Button onClick={() => actions.openNewEvent()}>
       <CalendarPlus aria-hidden="true" />
       Add event
     </Button>
@@ -92,10 +54,10 @@ export function ApplicationEventsPanel({ applicationId }: ApplicationEventsPanel
       <EventListItem
         key={event.id}
         event={event}
-        isUpdating={setCompleted.isPending && setCompleted.variables?.eventId === event.id}
-        onEdit={(eventToEdit) => setFormDialog({ key: Date.now(), event: eventToEdit })}
-        onDelete={setEventToDelete}
-        onToggleCompleted={handleToggleCompleted}
+        isUpdating={actions.isUpdating(event.id)}
+        onEdit={actions.openEditEvent}
+        onDelete={actions.requestDeleteEvent}
+        onToggleCompleted={actions.toggleCompleted}
       />
     )
   }
@@ -134,28 +96,7 @@ export function ApplicationEventsPanel({ applicationId }: ApplicationEventsPanel
   return (
     <>
       {renderContent()}
-
-      {formDialog && (
-        <EventFormDialog
-          key={formDialog.key}
-          applicationId={applicationId}
-          event={formDialog.event}
-          isOpen
-          onOpenChange={(isOpen) => !isOpen && setFormDialog(null)}
-        />
-      )}
-
-      <ConfirmDialog
-        isOpen={eventToDelete !== null}
-        onOpenChange={(isOpen) => !isOpen && setEventToDelete(null)}
-        title="Delete this event?"
-        description={`"${eventToDelete?.title ?? ''}" will be permanently removed from this application.`}
-        confirmLabel="Delete"
-        pendingLabel="Deleting…"
-        isDestructive
-        isPending={deleteEvent.isPending}
-        onConfirm={handleConfirmDelete}
-      />
+      {actions.dialogs}
     </>
   )
 }

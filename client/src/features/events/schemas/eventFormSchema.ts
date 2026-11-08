@@ -19,6 +19,8 @@ function optionalText(maxLength: number) {
 /** All values are strings (or a checkbox boolean) because they come straight from form inputs. */
 export const eventFormSchema = z
   .object({
+    /** An application id, or '' for a standalone event. */
+    applicationId: z.string(),
     eventType: z.enum(APPLICATION_EVENT_TYPES),
     /** Optional: an empty title falls back to the event type's label. */
     title: optionalText(200),
@@ -54,6 +56,7 @@ export const eventFormSchema = z
 export type EventFormValues = z.infer<typeof eventFormSchema>
 
 export const EMPTY_EVENT_FORM_VALUES: EventFormValues = {
+  applicationId: '',
   eventType: 'interview',
   title: '',
   date: '',
@@ -82,6 +85,7 @@ export function toEventPayload(values: EventFormValues): ApplicationEventPayload
   const endsAt = !values.isAllDay && values.endTime ? fromDateTimeInputValues(values.date, values.endTime) : null
 
   return {
+    application_id: values.applicationId || null,
     event_type: values.eventType,
     title: values.title.trim() || EVENT_TYPE_DETAILS[values.eventType].label,
     starts_at: startsAt,
@@ -95,6 +99,7 @@ export function toEventPayload(values: EventFormValues): ApplicationEventPayload
 /** Converts a stored event into form values for editing. */
 export function toEventFormValues(event: ApplicationEvent): EventFormValues {
   return {
+    applicationId: event.application_id ?? '',
     eventType: event.event_type,
     title: event.title,
     date: toDateInputValue(event.starts_at),
