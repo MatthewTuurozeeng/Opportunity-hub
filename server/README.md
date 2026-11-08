@@ -18,6 +18,7 @@ The backend is a hosted Supabase project. This folder holds its version-controll
 | `..._create_documents_storage_bucket.sql` | Private `documents` bucket (10 MiB, PDF/Word/text/images) with per-user folder policies. |
 | `..._restrict_to_single_owner.sql` | Allows exactly one account. Every sign-up after the owner's is rejected by the database. |
 | `..._create_application_functions.sql` | Atomic functions to create/update an opportunity with its application and change status with a note. |
+| `..._add_all_day_to_application_events.sql` | Adds `is_all_day` to events so deadlines and reminders can have a date without a time. |
 
 Ownership is enforced at two levels: Row Level Security limits each user to their own rows, and composite foreign keys on `(id, user_id)` prevent linking a record to a parent owned by someone else.
 

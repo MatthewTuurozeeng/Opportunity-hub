@@ -90,6 +90,7 @@ export type Database = {
           ends_at: string | null
           event_type: Database["public"]["Enums"]["application_event_type"]
           id: string
+          is_all_day: boolean
           is_completed: boolean
           location: string | null
           starts_at: string
@@ -104,6 +105,7 @@ export type Database = {
           ends_at?: string | null
           event_type: Database["public"]["Enums"]["application_event_type"]
           id?: string
+          is_all_day?: boolean
           is_completed?: boolean
           location?: string | null
           starts_at: string
@@ -118,6 +120,7 @@ export type Database = {
           ends_at?: string | null
           event_type?: Database["public"]["Enums"]["application_event_type"]
           id?: string
+          is_all_day?: boolean
           is_completed?: boolean
           location?: string | null
           starts_at?: string

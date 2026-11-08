@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { DOCUMENT_QUERY_KEYS } from '@/features/documents/hooks/useDocumentQueries'
+import { EVENT_QUERY_KEYS } from '@/features/events/hooks/useEventQueries'
 
 import type { ApplicationStatus } from '../constants/applicationStatuses'
 import {
@@ -60,10 +61,13 @@ export function useDeleteApplication() {
       // Drop the deleted record's cached detail so it is not refetched (and 404s).
       queryClient.removeQueries({ queryKey: APPLICATION_QUERY_KEYS.detail(applicationId) })
       queryClient.removeQueries({ queryKey: APPLICATION_QUERY_KEYS.statusHistory(applicationId) })
-      // Its document links were removed too, so library usage counts change.
+      // Its events were deleted with it.
+      queryClient.removeQueries({ queryKey: EVENT_QUERY_KEYS.forApplication(applicationId) })
+      // Its document links and events were removed too, so library counts and event lists change.
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: APPLICATION_QUERY_KEYS.list() }),
         queryClient.invalidateQueries({ queryKey: DOCUMENT_QUERY_KEYS.all }),
+        queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEYS.all }),
       ])
     },
   })
