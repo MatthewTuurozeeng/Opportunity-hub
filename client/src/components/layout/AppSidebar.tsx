@@ -1,5 +1,6 @@
 import { AddApplicationButton } from '@/components/shared/AddApplicationButton'
 import { SignOutButton } from '@/features/auth/components/SignOutButton'
+import { ThemeToggle } from '@/features/theme/components/ThemeToggle'
 
 import { AppLogo } from './AppLogo'
 import { SidebarNavigation } from './SidebarNavigation'
@@ -14,6 +15,7 @@ export function AppSidebar() {
       <AddApplicationButton className="w-full" />
       <SidebarNavigation />
       <div className="mt-auto">
+        <ThemeToggle showLabel className="mb-2 w-full" />
         <SignOutButton />
       </div>
     </aside>

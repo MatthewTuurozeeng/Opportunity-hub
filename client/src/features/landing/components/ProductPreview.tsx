@@ -16,7 +16,7 @@ const PREVIEW_UPCOMING = [
 const PREVIEW_APPLICATIONS = [
   { title: 'Data Science Internship', status: 'Interview', badge: 'bg-violet-50 text-violet-800 border-violet-200' },
   { title: 'Community Impact Grant', status: 'Under Review', badge: 'bg-sky-50 text-sky-800 border-sky-200' },
-  { title: 'Summer Research Programme', status: 'Successful', badge: 'bg-success-green text-pure-white border-success-green' },
+  { title: 'Summer Research Programme', status: 'Successful', badge: 'bg-success-green text-pure-white border-success-green dark:text-midnight-navy' },
 ]
 
 /** A decorative, static sketch of the dashboard. Example data only. */

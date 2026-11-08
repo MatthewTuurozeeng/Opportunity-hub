@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { useInstallPrompt } from '@/features/pwa/hooks/useInstallPrompt'
 import { useOnlineStatus } from '@/features/pwa/hooks/useOnlineStatus'
+import { ThemeSelector } from '@/features/theme/components/ThemeSelector'
 
 import { SettingsSection } from './SettingsSection'
 
@@ -94,9 +95,21 @@ function AboutSection() {
   )
 }
 
+function AppearanceSection() {
+  return (
+    <SettingsSection
+      title="Appearance"
+      description="Choose a light or dark theme, or follow your device's setting. The choice is saved on this device."
+    >
+      <ThemeSelector />
+    </SettingsSection>
+  )
+}
+
 export function AppSettings() {
   return (
     <div className="flex flex-col gap-4">
+      <AppearanceSection />
       <InstallSection />
       <AboutSection />
     </div>

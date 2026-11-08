@@ -3,6 +3,9 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
+/* `dark:` utilities follow the theme class on <html>, not only the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * OpportunityHub design system
  *
@@ -104,6 +107,134 @@
   --sidebar-accent: var(--color-soft-sky);
   --sidebar-accent-foreground: var(--color-midnight-navy);
   --sidebar-border: var(--color-border-mist);
+}
+
+/*
+ * Dark theme. Applied by the `dark` class on <html> (see public/theme-init.js
+ * and src/features/theme). Semantic tokens switch to dark surfaces and light text.
+ */
+.dark {
+  color-scheme: dark;
+
+  --background: #0b1220;
+  --foreground: #e3e8f0;
+  --heading: #f5f7fb;
+  --card: #111a2b;
+  --card-foreground: #e3e8f0;
+  --popover: #141f33;
+  --popover-foreground: #e3e8f0;
+  --primary: #e8eef8;
+  --primary-hover: #c9d5e8;
+  --primary-foreground: #0f1b2d;
+  --secondary: #1d2a40;
+  --secondary-foreground: #e8eef8;
+  --muted: #18233a;
+  --muted-foreground: #9aa7bb;
+  --accent: #1d2a40;
+  --accent-foreground: #e8eef8;
+  --destructive: #f87171;
+  --border: #26324a;
+  --input: #2c3a55;
+  --ring: #93a8cc;
+
+  --sidebar: #0f1828;
+  --sidebar-foreground: #e3e8f0;
+  --sidebar-accent: #1d2a40;
+  --sidebar-accent-foreground: #e8eef8;
+  --sidebar-border: #26324a;
+
+  /* Lighter green so success text and icons stay readable on dark surfaces. */
+  --color-success-green: #4ade80;
+
+  /*
+   * Status badges and icon chips use light tints (e.g. bg-amber-50 text-amber-700).
+   * Here the same class names become dark tints with light text, so every badge
+   * adapts without per-component changes.
+   */
+  --color-red-50: oklch(0.27 0.045 25);
+  --color-red-100: oklch(0.31 0.06 25);
+  --color-red-200: oklch(0.4 0.07 25);
+  --color-red-600: oklch(0.78 0.13 25);
+  --color-red-700: oklch(0.82 0.11 25);
+  --color-red-800: oklch(0.86 0.09 25);
+  --color-orange-50: oklch(0.27 0.045 50);
+  --color-orange-100: oklch(0.31 0.06 50);
+  --color-orange-200: oklch(0.4 0.07 50);
+  --color-orange-600: oklch(0.78 0.13 50);
+  --color-orange-700: oklch(0.82 0.11 50);
+  --color-orange-800: oklch(0.86 0.09 50);
+  --color-amber-50: oklch(0.27 0.045 75);
+  --color-amber-100: oklch(0.31 0.06 75);
+  --color-amber-200: oklch(0.4 0.07 75);
+  --color-amber-600: oklch(0.78 0.13 75);
+  --color-amber-700: oklch(0.82 0.11 75);
+  --color-amber-800: oklch(0.86 0.09 75);
+  --color-green-50: oklch(0.27 0.045 150);
+  --color-green-100: oklch(0.31 0.06 150);
+  --color-green-200: oklch(0.4 0.07 150);
+  --color-green-600: oklch(0.78 0.13 150);
+  --color-green-700: oklch(0.82 0.11 150);
+  --color-green-800: oklch(0.86 0.09 150);
+  --color-emerald-50: oklch(0.27 0.045 165);
+  --color-emerald-100: oklch(0.31 0.06 165);
+  --color-emerald-200: oklch(0.4 0.07 165);
+  --color-emerald-600: oklch(0.78 0.13 165);
+  --color-emerald-700: oklch(0.82 0.11 165);
+  --color-emerald-800: oklch(0.86 0.09 165);
+  --color-cyan-50: oklch(0.27 0.045 210);
+  --color-cyan-100: oklch(0.31 0.06 210);
+  --color-cyan-200: oklch(0.4 0.07 210);
+  --color-cyan-600: oklch(0.78 0.13 210);
+  --color-cyan-700: oklch(0.82 0.11 210);
+  --color-cyan-800: oklch(0.86 0.09 210);
+  --color-sky-50: oklch(0.27 0.045 235);
+  --color-sky-100: oklch(0.31 0.06 235);
+  --color-sky-200: oklch(0.4 0.07 235);
+  --color-sky-600: oklch(0.78 0.13 235);
+  --color-sky-700: oklch(0.82 0.11 235);
+  --color-sky-800: oklch(0.86 0.09 235);
+  --color-blue-50: oklch(0.27 0.045 260);
+  --color-blue-100: oklch(0.31 0.06 260);
+  --color-blue-200: oklch(0.4 0.07 260);
+  --color-blue-600: oklch(0.78 0.13 260);
+  --color-blue-700: oklch(0.82 0.11 260);
+  --color-blue-800: oklch(0.86 0.09 260);
+  --color-indigo-50: oklch(0.27 0.045 275);
+  --color-indigo-100: oklch(0.31 0.06 275);
+  --color-indigo-200: oklch(0.4 0.07 275);
+  --color-indigo-600: oklch(0.78 0.13 275);
+  --color-indigo-700: oklch(0.82 0.11 275);
+  --color-indigo-800: oklch(0.86 0.09 275);
+  --color-violet-50: oklch(0.27 0.045 293);
+  --color-violet-100: oklch(0.31 0.06 293);
+  --color-violet-200: oklch(0.4 0.07 293);
+  --color-violet-600: oklch(0.78 0.13 293);
+  --color-violet-700: oklch(0.82 0.11 293);
+  --color-violet-800: oklch(0.86 0.09 293);
+  --color-rose-50: oklch(0.27 0.045 10);
+  --color-rose-100: oklch(0.31 0.06 10);
+  --color-rose-200: oklch(0.4 0.07 10);
+  --color-rose-600: oklch(0.78 0.13 10);
+  --color-rose-700: oklch(0.82 0.11 10);
+  --color-rose-800: oklch(0.86 0.09 10);
+  --color-slate-50: oklch(0.27 0.015 255);
+  --color-slate-100: oklch(0.31 0.015 255);
+  --color-slate-200: oklch(0.4 0.015 255);
+  --color-slate-600: oklch(0.78 0.02 255);
+  --color-slate-700: oklch(0.82 0.02 255);
+  --color-slate-800: oklch(0.86 0.02 255);
+  --color-stone-50: oklch(0.27 0.015 60);
+  --color-stone-100: oklch(0.31 0.015 60);
+  --color-stone-200: oklch(0.4 0.015 60);
+  --color-stone-600: oklch(0.78 0.02 60);
+  --color-stone-700: oklch(0.82 0.02 60);
+  --color-stone-800: oklch(0.86 0.02 60);
+  --color-gray-50: oklch(0.27 0.015 260);
+  --color-gray-100: oklch(0.31 0.015 260);
+  --color-gray-200: oklch(0.4 0.015 260);
+  --color-gray-600: oklch(0.78 0.02 260);
+  --color-gray-700: oklch(0.82 0.02 260);
+  --color-gray-800: oklch(0.86 0.02 260);
 }
 
 @layer base {
