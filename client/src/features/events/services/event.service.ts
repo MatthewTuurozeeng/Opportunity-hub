@@ -39,6 +39,20 @@ export async function listUpcomingEvents(limit: number, now: Date = new Date()):
   return data
 }
 
+/** Every event with its application, earliest first (for exports). */
+export async function listAllEvents(): Promise<EventWithApplication[]> {
+  const { data, error } = await supabase
+    .from('application_events')
+    .select('*, application:applications(id, opportunity:opportunities!inner(title, organization))')
+    .order('starts_at', { ascending: true })
+
+  if (error) {
+    throw new Error('Unable to load your events.')
+  }
+
+  return data
+}
+
 /** Events starting in [start, end), with their application, earliest first. */
 export async function listEventsBetween(start: Date, end: Date): Promise<EventWithApplication[]> {
   const { data, error } = await supabase

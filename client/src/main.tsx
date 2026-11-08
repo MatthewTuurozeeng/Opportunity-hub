@@ -2,8 +2,12 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import { ConfigurationErrorPage } from '@/components/shared/ConfigurationErrorPage'
+import { startCapturingInstallPrompt } from '@/features/pwa/hooks/installPrompt'
 import { isEnvConfigured, missingEnvVariables } from '@/lib/env'
 import '@/styles/globals.css'
+
+// Before anything else renders: the browser may offer installation immediately.
+startCapturingInstallPrompt()
 
 const rootElement = document.getElementById('root')
 
