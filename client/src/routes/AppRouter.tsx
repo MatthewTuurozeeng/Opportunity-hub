@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
+import { createBrowserRouter, RouterProvider } from 'react-router'
 
 import { MainLayout } from '@/components/layout/MainLayout'
 import { ApplicationDetailPage } from '@/features/applications/pages/ApplicationDetailPage'
@@ -12,6 +12,7 @@ import { CalendarPage } from '@/features/calendar/pages/CalendarPage'
 import { CommunicationsPage } from '@/features/communications/pages/CommunicationsPage'
 import { DashboardPage } from '@/features/dashboard/pages/DashboardPage'
 import { DocumentsPage } from '@/features/documents/pages/DocumentsPage'
+import { LandingPage } from '@/features/landing/pages/LandingPage'
 import { NotesPage } from '@/features/notes/pages/NotesPage'
 import { SettingsPage } from '@/features/settings/pages/SettingsPage'
 
@@ -19,6 +20,7 @@ import { NotFoundPage } from './NotFoundPage'
 import { ROUTE_PATHS } from './routePaths'
 
 const router = createBrowserRouter([
+  { path: ROUTE_PATHS.HOME, element: <LandingPage /> },
   { path: ROUTE_PATHS.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATHS.SIGN_UP, element: <SignUpPage /> },
   {
@@ -27,7 +29,6 @@ const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-          { index: true, element: <Navigate to={ROUTE_PATHS.DASHBOARD} replace /> },
           { path: ROUTE_PATHS.DASHBOARD, element: <DashboardPage /> },
           { path: ROUTE_PATHS.APPLICATIONS, element: <ApplicationsPage /> },
           { path: ROUTE_PATHS.NEW_APPLICATION, element: <NewApplicationPage /> },

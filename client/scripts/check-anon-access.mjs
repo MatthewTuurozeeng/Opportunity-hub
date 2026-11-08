@@ -29,6 +29,7 @@ const TABLES = [
   'application_events',
   'communications',
   'notes',
+  'signup_invitations',
 ]
 
 const results = []
