@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { COMMUNICATION_QUERY_KEYS } from '@/features/communications/hooks/useCommunicationQueries'
 
 import {
   attachDocuments,
@@ -14,10 +15,17 @@ import {
 import type { DocumentDetailsValues, DocumentGroup, DocumentRecord } from '../types/document.types'
 import { DOCUMENT_QUERY_KEYS } from './useDocumentQueries'
 
-/** Library and application attachment lists depend on each other, so refresh both. */
+/**
+ * Library and application attachment lists depend on each other, so refresh both.
+ * Communications show attachment names and lose deleted attachments, so refresh them too.
+ */
 function useInvalidateDocuments() {
   const queryClient = useQueryClient()
-  return () => queryClient.invalidateQueries({ queryKey: DOCUMENT_QUERY_KEYS.all })
+  return () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: DOCUMENT_QUERY_KEYS.all }),
+      queryClient.invalidateQueries({ queryKey: COMMUNICATION_QUERY_KEYS.all }),
+    ])
 }
 
 export function useUploadDocument() {

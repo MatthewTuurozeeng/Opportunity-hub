@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { COMMUNICATION_QUERY_KEYS } from '@/features/communications/hooks/useCommunicationQueries'
 import { DOCUMENT_QUERY_KEYS } from '@/features/documents/hooks/useDocumentQueries'
 import { EVENT_QUERY_KEYS } from '@/features/events/hooks/useEventQueries'
 
@@ -13,10 +14,17 @@ import {
 import type { ApplicationPayload } from '../types/application.types'
 import { APPLICATION_QUERY_KEYS } from './applicationQueryKeys'
 
-/** Every write can change lists, details and history, so refresh all application data. */
+/**
+ * Every write can change lists, details and history, so refresh all application data.
+ * Communication lists show each application's title, so refresh them too.
+ */
 function useInvalidateApplications() {
   const queryClient = useQueryClient()
-  return () => queryClient.invalidateQueries({ queryKey: APPLICATION_QUERY_KEYS.all })
+  return () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: APPLICATION_QUERY_KEYS.all }),
+      queryClient.invalidateQueries({ queryKey: COMMUNICATION_QUERY_KEYS.all }),
+    ])
 }
 
 export function useCreateApplication() {
@@ -63,11 +71,13 @@ export function useDeleteApplication() {
       queryClient.removeQueries({ queryKey: APPLICATION_QUERY_KEYS.statusHistory(applicationId) })
       // Its events were deleted with it.
       queryClient.removeQueries({ queryKey: EVENT_QUERY_KEYS.forApplication(applicationId) })
-      // Its document links and events were removed too, so library counts and event lists change.
+      queryClient.removeQueries({ queryKey: COMMUNICATION_QUERY_KEYS.forApplication(applicationId) })
+      // Its document links, events and communications were removed too.
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: APPLICATION_QUERY_KEYS.list() }),
         queryClient.invalidateQueries({ queryKey: DOCUMENT_QUERY_KEYS.all }),
         queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEYS.all }),
+        queryClient.invalidateQueries({ queryKey: COMMUNICATION_QUERY_KEYS.all }),
       ])
     },
   })
