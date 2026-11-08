@@ -3,8 +3,8 @@
 -- signed-out visitor can reach nothing.
 --
 -- The app allows a single owner, so a second account can never exist in
--- production. To prove isolation anyway, this test briefly disables the
--- single-owner trigger to create an "intruder" account. Everything runs in one
+-- production. To prove isolation anyway, this test briefly switches off the
+-- single-owner guard to create an "intruder" account. Everything runs in one
 -- transaction that is rolled back at the end.
 -- =============================================================================
 
@@ -13,14 +13,25 @@ create extension if not exists pgtap with schema extensions;
 select no_plan();
 
 -- -----------------------------------------------------------------------------
--- Fixtures (written as the database superuser, which bypasses RLS)
+-- Fixtures (written as the postgres role, which owns these tables, so RLS does not apply)
 -- -----------------------------------------------------------------------------
 
-alter table auth.users disable trigger enforce_single_owner;
+-- auth.users belongs to Supabase's auth service, so its triggers cannot be
+-- disabled here. Instead, make the single-owner guard a no-op for this
+-- transaction only; the rollback at the end restores the real function.
+create or replace function public.prevent_additional_users()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+begin
+  return new;
+end;
+$$;
+
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'owner@example.test'),
   ('22222222-2222-2222-2222-222222222222', 'intruder@example.test');
-alter table auth.users enable trigger enforce_single_owner;
 
 insert into public.opportunities (id, user_id, title, organization)
 values ('a0000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', 'Owner fellowship', 'Acme');
