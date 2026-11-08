@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 
 import { MainLayout } from '@/components/layout/MainLayout'
-import { AnalyticsPage } from '@/features/analytics/pages/AnalyticsPage'
 import { ApplicationDetailPage } from '@/features/applications/pages/ApplicationDetailPage'
 import { ApplicationsPage } from '@/features/applications/pages/ApplicationsPage'
 import { EditApplicationPage } from '@/features/applications/pages/EditApplicationPage'
@@ -37,7 +36,11 @@ const router = createBrowserRouter([
           { path: ROUTE_PATHS.DOCUMENTS, element: <DocumentsPage /> },
           { path: ROUTE_PATHS.COMMUNICATIONS, element: <CommunicationsPage /> },
           { path: ROUTE_PATHS.CALENDAR, element: <CalendarPage /> },
-          { path: ROUTE_PATHS.ANALYTICS, element: <AnalyticsPage /> },
+          {
+            path: ROUTE_PATHS.ANALYTICS,
+            // Loaded on demand so the charting library stays out of the main bundle.
+            lazy: async () => ({ Component: (await import('@/features/analytics/pages/AnalyticsPage')).AnalyticsPage }),
+          },
           { path: ROUTE_PATHS.NOTES, element: <NotesPage /> },
           { path: ROUTE_PATHS.SETTINGS, element: <SettingsPage /> },
           { path: '*', element: <NotFoundPage /> },

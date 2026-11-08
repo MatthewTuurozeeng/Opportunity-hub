@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 
-import type { ApplicationEvent, ApplicationEventPayload } from '../types/event.types'
+import type { ApplicationEvent, ApplicationEventPayload, EventWithApplication } from '../types/event.types'
 
 /** Events for one application, earliest first. */
 export async function listApplicationEvents(applicationId: string): Promise<ApplicationEvent[]> {
@@ -12,6 +12,28 @@ export async function listApplicationEvents(applicationId: string): Promise<Appl
 
   if (error) {
     throw new Error('Unable to load the events for this application.')
+  }
+
+  return data
+}
+
+/**
+ * Incomplete events from the start of today onwards, soonest first.
+ * Callers drop timed events that already ended earlier today.
+ */
+export async function listUpcomingEvents(limit: number, now: Date = new Date()): Promise<EventWithApplication[]> {
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+  const { data, error } = await supabase
+    .from('application_events')
+    .select('*, application:applications(id, opportunity:opportunities!inner(title, organization))')
+    .eq('is_completed', false)
+    .gte('starts_at', startOfToday.toISOString())
+    .order('starts_at', { ascending: true })
+    .limit(limit)
+
+  if (error) {
+    throw new Error('Unable to load upcoming events.')
   }
 
   return data
