@@ -68,7 +68,7 @@ export async function signOut() {
   }
 }
 
-/** Whether the single owner account has already been created. */
+/** Whether the owner account (the first account) has already been created. */
 export async function getOwnerAccountExists(): Promise<boolean> {
   const { data, error } = await supabase.rpc('owner_account_exists')
 
