@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
-import { fromDateInputValue, getDaysUntil, getTodayDateInputValue, toDateInputValue } from './dateUtils'
+import {
+  fromDateInputValue,
+  fromDateTimeInputValues,
+  getDaysUntil,
+  getTodayDateInputValue,
+  toDateInputValue,
+  toTimeInputValue,
+} from './dateUtils'
 
 describe('toDateInputValue', () => {
   it('returns an empty string for missing or invalid values', () => {
@@ -47,5 +54,32 @@ describe('getDaysUntil', () => {
 describe('getTodayDateInputValue', () => {
   it('formats the given date as YYYY-MM-DD', () => {
     expect(getTodayDateInputValue(new Date(2026, 0, 9, 12))).toBe('2026-01-09')
+  })
+})
+
+describe('fromDateTimeInputValues', () => {
+  it('combines a date and a time in local time', () => {
+    const date = new Date(fromDateTimeInputValues('2026-11-20', '14:05')!)
+
+    expect([date.getFullYear(), date.getMonth(), date.getDate()]).toEqual([2026, 10, 20])
+    expect([date.getHours(), date.getMinutes()]).toEqual([14, 5])
+  })
+
+  it('returns null when the date or time is missing or malformed', () => {
+    expect(fromDateTimeInputValues('', '10:00')).toBeNull()
+    expect(fromDateTimeInputValues('2026-11-20', '')).toBeNull()
+    expect(fromDateTimeInputValues('2026-11-20', '24:00')).toBeNull()
+    expect(fromDateTimeInputValues('2026-11-20', '9:00')).toBeNull()
+  })
+})
+
+describe('toTimeInputValue', () => {
+  it('returns an empty string for missing or invalid values', () => {
+    expect(toTimeInputValue(null)).toBe('')
+    expect(toTimeInputValue('not-a-date')).toBe('')
+  })
+
+  it('round-trips with fromDateTimeInputValues', () => {
+    expect(toTimeInputValue(fromDateTimeInputValues('2026-11-20', '09:30'))).toBe('09:30')
   })
 })

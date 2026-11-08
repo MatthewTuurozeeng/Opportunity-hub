@@ -8,14 +8,15 @@ import { LoadingState } from '@/components/shared/LoadingState'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ApplicationDocumentsPanel } from '@/features/documents/components/ApplicationDocumentsPanel'
+import { ApplicationEventsPanel } from '@/features/events/components/ApplicationEventsPanel'
 import { buildEditApplicationPath, ROUTE_PATHS } from '@/routes/routePaths'
 
+import { ApplicationActivityTimeline } from '../components/ApplicationActivityTimeline'
 import { ApplicationNotFound } from '../components/ApplicationNotFound'
 import { ApplicationOverview } from '../components/ApplicationOverview'
 import { ApplicationStatusBadge } from '../components/ApplicationStatusBadge'
 import { ChangeStatusDialog } from '../components/ChangeStatusDialog'
 import { DeleteApplicationButton } from '../components/DeleteApplicationButton'
-import { StatusHistoryTimeline } from '../components/StatusHistoryTimeline'
 import { useApplication } from '../hooks/useApplicationQueries'
 
 export function ApplicationDetailPage() {
@@ -68,10 +69,11 @@ export function ApplicationDetailPage() {
           <ApplicationOverview application={application} />
         </TabsContent>
 
-        <TabsContent value="timeline" className="pt-4">
+        <TabsContent value="timeline" className="grid items-start gap-4 pt-4 xl:grid-cols-[3fr_2fr]">
+          <ApplicationEventsPanel applicationId={application.id} />
           <section className="rounded-lg border border-border bg-card p-5">
-            <h2 className="mb-4 text-section-heading font-semibold">Status history</h2>
-            <StatusHistoryTimeline applicationId={application.id} />
+            <h2 className="mb-4 text-section-heading font-semibold">Activity timeline</h2>
+            <ApplicationActivityTimeline application={application} />
           </section>
         </TabsContent>
 
