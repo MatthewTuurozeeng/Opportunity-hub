@@ -16,7 +16,7 @@ Reviewed: 10 November 2026.
 | 6 | File type and size validation | Client checks type and 10 MiB limit before upload; the bucket enforces the same MIME list and size | `fileUtils.test.ts`; `UploadDocumentDialog.test.tsx` |
 | 7 | No service-role key in the frontend | The client only reads `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` | Code review: no other Supabase key is referenced in `client/` |
 | 8 | Public configuration in environment variables | `client/.env` holds only the two public values; `.gitignore` blocks other env files | Code review |
-| 9 | Secure sessions | Supabase Auth with token refresh; a single owner account enforced in the database | `03_single_owner.test.sql` |
+| 9 | Secure sessions and controlled sign-up | Supabase Auth with token refresh; invite-only sign-up enforced in the database (the first account is the owner; members cannot read invitations or change their role) | `03_invite_only_signup.test.sql`; `01_row_level_security.test.sql` |
 | 10 | Important operations validated in the database | Check constraints (draft has no submission date, `https://` links, event times, storage path), append-only status history, atomic write functions | `02_data_integrity.test.sql` |
 
 Signed-out access was also checked against the live project with `npm run security:check`: all ten tables, the documents bucket and both write functions are blocked; `owner_account_exists` reveals only a yes/no.
@@ -29,7 +29,7 @@ Signed-out access was also checked against the live project with `npm run securi
 | No browser security headers (Content-Security-Policy, frame protection) were configured. | Medium | Fixed in Phase 10: `client/vercel.json` sends CSP, `X-Frame-Options`, `nosniff`, Referrer-Policy, Permissions-Policy and HSTS. `e2e/production-build.spec.ts` checks them and that the CSP blocks nothing the app needs |
 | The full signed-in end-to-end workflow needs real credentials and writes to the live project, so it is opt-in rather than run in CI. | Informational | Accepted. It cleans up after itself; see `client/e2e/workflow.spec.ts` |
 
-No issue was found that lets a signed-out visitor, or a second account, read or change the owner's data.
+No issue was found that lets a signed-out visitor, or another account, read or change the owner's data.
 
 ## Running the checks
 
