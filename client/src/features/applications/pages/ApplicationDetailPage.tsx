@@ -1,12 +1,12 @@
-import { Mail, Pencil } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 
 import { BackLink } from '@/components/shared/BackLink'
-import { EmptyState } from '@/components/shared/EmptyState'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ApplicationCommunicationsPanel } from '@/features/communications/components/ApplicationCommunicationsPanel'
 import { ApplicationDocumentsPanel } from '@/features/documents/components/ApplicationDocumentsPanel'
 import { ApplicationEventsPanel } from '@/features/events/components/ApplicationEventsPanel'
 import { buildEditApplicationPath, ROUTE_PATHS } from '@/routes/routePaths'
@@ -82,11 +82,7 @@ export function ApplicationDetailPage() {
         </TabsContent>
 
         <TabsContent value="communication" className="pt-4">
-          <EmptyState
-            icon={Mail}
-            title="Communication records are coming soon"
-            description="Emails and messages related to this application will be listed here."
-          />
+          <ApplicationCommunicationsPanel applicationId={application.id} />
         </TabsContent>
 
         <TabsContent value="notes" className="pt-4">
