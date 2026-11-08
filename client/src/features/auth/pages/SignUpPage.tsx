@@ -13,7 +13,7 @@ import { ROUTE_PATHS } from '@/routes/routePaths'
 import { AuthLayout } from '../components/AuthLayout'
 import { useAuth } from '../hooks/useAuth'
 import { OWNER_ACCOUNT_EXISTS_QUERY_KEY, useOwnerAccountExists } from '../hooks/useOwnerAccountExists'
-import { PASSWORD_MIN_LENGTH, type SignUpFormValues, signUpSchema } from '../schemas/signUpSchema'
+import { PASSWORD_RULES_HINT, type SignUpFormValues, signUpSchema } from '../schemas/signUpSchema'
 import { signUp } from '../services/auth.service'
 
 const SIGN_IN_LINK_CLASS_NAME = 'font-medium text-primary underline-offset-4 hover:underline'
@@ -120,7 +120,7 @@ export function SignUpPage() {
           label="Password"
           type="password"
           autoComplete="new-password"
-          hint={`At least ${PASSWORD_MIN_LENGTH} characters, with uppercase, lowercase and a number.`}
+          hint={PASSWORD_RULES_HINT}
           errorMessage={errors.password?.message}
           {...register('password')}
         />

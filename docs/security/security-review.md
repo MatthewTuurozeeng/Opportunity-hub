@@ -26,7 +26,7 @@ Signed-out access was also checked against the live project with `npm run securi
 | Finding | Severity | Status |
 |---|---|---|
 | `change_application_status` attached a note to the newest history row by `changed_at`. Within one transaction every row shares the same `now()`, so the note could land on the wrong row. | Low (data accuracy, not access) | Fixed in `20261110000100_attach_status_note_precisely.sql` |
-| No browser security headers (Content-Security-Policy, frame protection) are configured yet. | Medium | Planned for Phase 10, where hosting headers are set in the Vercel configuration |
+| No browser security headers (Content-Security-Policy, frame protection) were configured. | Medium | Fixed in Phase 10: `client/vercel.json` sends CSP, `X-Frame-Options`, `nosniff`, Referrer-Policy, Permissions-Policy and HSTS. `e2e/production-build.spec.ts` checks them and that the CSP blocks nothing the app needs |
 | The full signed-in end-to-end workflow needs real credentials and writes to the live project, so it is opt-in rather than run in CI. | Informational | Accepted. It cleans up after itself; see `client/e2e/workflow.spec.ts` |
 
 No issue was found that lets a signed-out visitor, or a second account, read or change the owner's data.
@@ -37,6 +37,7 @@ No issue was found that lets a signed-out visitor, or a second account, read or 
 |---|---|---|
 | Unit and component tests | `npm test` | `client/` |
 | End-to-end, signed out (read-only) | `npm run test:e2e` | `client/` |
+| End-to-end, production build (headers, PWA) | `npm run build && npm run preview`, then `E2E_BASE_URL=http://localhost:4173 npm run test:e2e` | `client/` |
 | End-to-end, signed-in workflow (opt-in) | `E2E_EMAIL=… E2E_PASSWORD=… npm run test:e2e -- --project=desktop` | `client/` |
 | Live signed-out access check (read-only) | `npm run security:check` | `client/` |
 | Database security tests | `supabase start --workdir server` then `supabase test db --workdir server` (needs Docker) | repository root |
