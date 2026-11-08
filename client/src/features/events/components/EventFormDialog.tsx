@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog'
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { Textarea } from '@/components/ui/textarea'
+import { useApplications } from '@/features/applications/hooks/useApplicationQueries'
 
 import { APPLICATION_EVENT_TYPES, EVENT_TYPE_DETAILS } from '../constants/eventTypes'
 import { useSaveApplicationEvent } from '../hooks/useEventMutations'
@@ -30,16 +31,21 @@ import type { ApplicationEvent } from '../types/event.types'
 
 /** Mounted with a fresh `key` per opening, so the form starts from the event's values. */
 interface EventFormDialogProps {
-  applicationId: string
+  /** Ties the event to this application and hides the application picker. */
+  fixedApplicationId?: string
   /** The event to edit. Omit to add a new one. */
   event?: ApplicationEvent
+  /** "YYYY-MM-DD" to start a new event on, e.g. the day picked on the calendar. */
+  defaultDate?: string
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
 }
 
-export function EventFormDialog({ applicationId, event, isOpen, onOpenChange }: EventFormDialogProps) {
-  const saveEvent = useSaveApplicationEvent(applicationId)
+export function EventFormDialog({ fixedApplicationId, event, defaultDate, isOpen, onOpenChange }: EventFormDialogProps) {
+  const saveEvent = useSaveApplicationEvent()
   const isEditing = event !== undefined
+  const showApplicationPicker = fixedApplicationId === undefined
+  const { data: applications, isLoading: isLoadingApplications } = useApplications()
 
   const {
     control,
@@ -48,7 +54,9 @@ export function EventFormDialog({ applicationId, event, isOpen, onOpenChange }: 
     formState: { errors, isDirty },
   } = useForm<EventFormValues>({
     resolver: zodResolver(eventFormSchema),
-    defaultValues: event ? toEventFormValues(event) : EMPTY_EVENT_FORM_VALUES,
+    defaultValues: event
+      ? toEventFormValues(event)
+      : { ...EMPTY_EVENT_FORM_VALUES, applicationId: fixedApplicationId ?? '', date: defaultDate ?? '' },
   })
 
   const eventType = useWatch({ control, name: 'eventType' })
@@ -73,9 +81,31 @@ export function EventFormDialog({ applicationId, event, isOpen, onOpenChange }: 
           <DialogHeader>
             <DialogTitle>{isEditing ? 'Edit event' : 'Add event'}</DialogTitle>
             <DialogDescription>
-              Record a deadline, interview, assessment or reminder for this application.
+              Record a deadline, interview, assessment or reminder.
             </DialogDescription>
           </DialogHeader>
+
+          {showApplicationPicker && (
+            <FormControl id="event-application" label="Application" hint="Optional. Leave unlinked for a general event.">
+              {(controlProps) => (
+                <NativeSelect
+                  className="w-full"
+                  disabled={isLoadingApplications}
+                  {...controlProps}
+                  {...register('applicationId')}
+                >
+                  <NativeSelectOption value="">
+                    {isLoadingApplications ? 'Loading applications…' : 'Not linked to an application'}
+                  </NativeSelectOption>
+                  {applications?.map((application) => (
+                    <NativeSelectOption key={application.id} value={application.id}>
+                      {application.opportunity.title} — {application.opportunity.organization}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              )}
+            </FormControl>
+          )}
 
           <FormControl id="event-type" label="Type" isRequired errorMessage={errors.eventType?.message}>
             {(controlProps) => (

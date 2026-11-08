@@ -9,7 +9,7 @@ import {
 import type { ApplicationEventPayload } from '../types/event.types'
 import { EVENT_QUERY_KEYS } from './useEventQueries'
 
-/** Event lists feed both the application timeline and (later) the calendar, so refresh them all. */
+/** Event lists feed the application timeline, the dashboard and the calendar, so refresh them all. */
 function useInvalidateEvents() {
   const queryClient = useQueryClient()
   return () => queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEYS.all })
@@ -21,12 +21,12 @@ interface SaveEventVariables {
   payload: ApplicationEventPayload
 }
 
-export function useSaveApplicationEvent(applicationId: string) {
+export function useSaveApplicationEvent() {
   const invalidateEvents = useInvalidateEvents()
 
   return useMutation({
     mutationFn: ({ eventId, payload }: SaveEventVariables) =>
-      eventId ? updateApplicationEvent(eventId, payload) : createApplicationEvent(applicationId, payload),
+      eventId ? updateApplicationEvent(eventId, payload) : createApplicationEvent(payload),
     onSuccess: invalidateEvents,
   })
 }

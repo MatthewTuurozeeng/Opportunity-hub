@@ -45,7 +45,8 @@ export function DeleteApplicationButton({ application }: DeleteApplicationButton
         description={
           <>
             This permanently deletes <span className="font-medium">{application.opportunity.title}</span>, its application
-            details and status history. Documents in your library are kept. This cannot be undone.
+            details, status history, events and communications. Documents in your library and your notes are kept. This
+            cannot be undone.
           </>
         }
         confirmLabel="Delete application"

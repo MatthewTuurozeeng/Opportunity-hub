@@ -39,8 +39,24 @@ export async function listUpcomingEvents(limit: number, now: Date = new Date()):
   return data
 }
 
-export async function createApplicationEvent(applicationId: string, payload: ApplicationEventPayload): Promise<void> {
-  const { error } = await supabase.from('application_events').insert({ ...payload, application_id: applicationId })
+/** Events starting in [start, end), with their application, earliest first. */
+export async function listEventsBetween(start: Date, end: Date): Promise<EventWithApplication[]> {
+  const { data, error } = await supabase
+    .from('application_events')
+    .select('*, application:applications(id, opportunity:opportunities!inner(title, organization))')
+    .gte('starts_at', start.toISOString())
+    .lt('starts_at', end.toISOString())
+    .order('starts_at', { ascending: true })
+
+  if (error) {
+    throw new Error('Unable to load events for this month.')
+  }
+
+  return data
+}
+
+export async function createApplicationEvent(payload: ApplicationEventPayload): Promise<void> {
+  const { error } = await supabase.from('application_events').insert(payload)
 
   if (error) {
     throw new Error('Unable to save the event. Please check the details and try again.')

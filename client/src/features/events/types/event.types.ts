@@ -11,6 +11,8 @@ export type EventWithApplication = ApplicationEvent & {
 
 /** Values sent to the database when creating or updating an event. */
 export interface ApplicationEventPayload {
+  /** Null for a standalone event that is not tied to an application. */
+  application_id: string | null
   event_type: ApplicationEventType
   title: string
   starts_at: string

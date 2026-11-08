@@ -1,4 +1,5 @@
 import { CircleCheck, MapPin, MoreHorizontal, Pencil, RotateCcw, Trash2 } from 'lucide-react'
+import { Link } from 'react-router'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import { buildApplicationDetailPath } from '@/routes/routePaths'
 
 import { EVENT_TYPE_DETAILS } from '../constants/eventTypes'
 import type { ApplicationEvent } from '../types/event.types'
@@ -18,13 +20,15 @@ import { EventTypeIcon } from './EventTypeIcon'
 
 interface EventListItemProps {
   event: ApplicationEvent
+  /** Shows a link to the event's application (e.g. on the calendar). */
+  application?: { id: string; title: string } | null
   isUpdating: boolean
   onEdit: (event: ApplicationEvent) => void
   onDelete: (event: ApplicationEvent) => void
   onToggleCompleted: (event: ApplicationEvent) => void
 }
 
-export function EventListItem({ event, isUpdating, onEdit, onDelete, onToggleCompleted }: EventListItemProps) {
+export function EventListItem({ event, application, isUpdating, onEdit, onDelete, onToggleCompleted }: EventListItemProps) {
   const isUpcoming = isEventUpcoming(event)
   const proximity = isUpcoming ? describeEventProximity(event) : null
   const typeLabel = EVENT_TYPE_DETAILS[event.event_type].label
@@ -54,6 +58,16 @@ export function EventListItem({ event, isUpdating, onEdit, onDelete, onToggleCom
           {event.title !== typeLabel && <>{typeLabel} · </>}
           <time dateTime={event.starts_at}>{formatEventTiming(event)}</time>
         </p>
+        {application && (
+          <p className="text-supporting">
+            <Link
+              to={buildApplicationDetailPath(application.id)}
+              className="font-medium text-primary underline-offset-4 hover:underline"
+            >
+              {application.title}
+            </Link>
+          </p>
+        )}
         {event.location && (
           <p className="flex items-center gap-1 text-supporting text-muted-foreground">
             <MapPin className="size-3 shrink-0" aria-hidden="true" />

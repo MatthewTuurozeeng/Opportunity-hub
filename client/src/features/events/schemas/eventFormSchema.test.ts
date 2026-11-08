@@ -37,6 +37,11 @@ describe('eventFormSchema', () => {
 })
 
 describe('toEventPayload', () => {
+  it('stores a standalone event without an application', () => {
+    expect(toEventPayload(buildValues()).application_id).toBeNull()
+    expect(toEventPayload(buildValues({ applicationId: 'application-1' })).application_id).toBe('application-1')
+  })
+
   it('falls back to the event type label when the title is blank', () => {
     expect(toEventPayload(buildValues({ eventType: 'assessment', title: '  ' })).title).toBe('Assessment')
   })
@@ -62,7 +67,7 @@ describe('toEventPayload', () => {
 
 describe('toEventFormValues', () => {
   it('round-trips a timed event', () => {
-    const values = buildValues({ title: 'Panel interview', startTime: '14:00', endTime: '15:00', location: 'Online' })
+    const values = buildValues({ applicationId: 'application-1', title: 'Panel interview', startTime: '14:00', endTime: '15:00', location: 'Online' })
     const payload = toEventPayload(values)
     const event = { ...payload, id: 'event-1', is_completed: false } as ApplicationEvent
 
