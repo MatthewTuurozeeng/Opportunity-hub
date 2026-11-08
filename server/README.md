@@ -16,11 +16,12 @@ The backend is a hosted Supabase project. This folder holds its version-controll
 | `..._record_application_status_history.sql` | Records every application status change automatically. |
 | `..._enable_row_level_security.sql` | Restricts every table to the signed-in owner. |
 | `..._create_documents_storage_bucket.sql` | Private `documents` bucket (10 MiB, PDF/Word/text/images) with per-user folder policies. |
-| `..._restrict_to_single_owner.sql` | Allows exactly one account. Every sign-up after the owner's is rejected by the database. |
+| `..._restrict_to_single_owner.sql` | Originally allowed exactly one account. Superseded by `..._invite_only_signup.sql`, which replaces its function. |
 | `..._create_application_functions.sql` | Atomic functions to create/update an opportunity with its application and change status with a note. |
 | `..._add_all_day_to_application_events.sql` | Adds `is_all_day` to events so deadlines and reminders can have a date without a time. |
 | `..._create_notes.sql` | Notes and reflections, optionally linked to an application (kept, unlinked, if the application is deleted), with owner-only RLS. |
 | `..._attach_status_note_precisely.sql` | Attaches a status-change note to exactly the history row that change created. |
+| `..._invite_only_signup.sql` | Invite-only sign-up: the first account is the owner, later accounts need an invitation (`signup_invitations`). Adds `profiles.role` and stops users changing their own role. |
 
 Ownership is enforced at two levels: Row Level Security limits each user to their own rows, and composite foreign keys on `(id, user_id)` prevent linking a record to a parent owned by someone else.
 
@@ -35,7 +36,7 @@ Ownership is enforced at two levels: Row Level Security limits each user to thei
    supabase db push --remote --workdir server
    ```
 
-3. **Keep sign-ups enabled.** In Authentication › Sign In / Providers, leave **Allow new users to sign up** on. The database accepts only the first account, so nobody else can register.
+3. **Keep sign-ups enabled.** In Authentication › Sign In / Providers, leave **Allow new users to sign up** on. The database accepts the first account (the owner) and, after that, only email addresses the owner has invited in **Settings › Invitations**.
 4. **Set redirect URLs.** Go to Authentication › URL Configuration and set the Site URL to `http://localhost:5173` (change it to the Vercel URL after deployment). Email confirmation links redirect here.
 5. **Configure the client.** Copy the Project URL and publishable key from Project Settings › API into `client/.env`.
 6. **Create the owner account** by running the app and choosing **Create your account** on the sign-in page. If **Confirm email** is on (Authentication › Sign In / Providers › Email), open the confirmation link sent to your inbox before signing in.
@@ -47,7 +48,7 @@ Ownership is enforced at two levels: Row Level Security limits each user to thei
 
 ## Database tests
 
-`supabase/tests/` holds pgTAP tests for Row Level Security, storage policies, data integrity and the single-owner rule. Each file runs in a transaction that is rolled back, so no test data is kept. They need Docker:
+`supabase/tests/` holds pgTAP tests for Row Level Security, storage policies, data integrity and invite-only sign-up. Each file runs in a transaction that is rolled back, so no test data is kept. They need Docker:
 
 ```bash
 supabase start --workdir server

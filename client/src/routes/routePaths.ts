@@ -1,6 +1,7 @@
 import { generatePath } from 'react-router'
 
 export const ROUTE_PATHS = {
+  HOME: '/',
   LOGIN: '/login',
   SIGN_UP: '/sign-up',
   DASHBOARD: '/dashboard',

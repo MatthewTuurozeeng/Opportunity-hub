@@ -527,21 +527,59 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          role: Database["public"]["Enums"]["profile_role"]
           updated_at: string
         }
         Insert: {
           created_at?: string
           full_name?: string | null
           id: string
+          role?: Database["public"]["Enums"]["profile_role"]
           updated_at?: string
         }
         Update: {
           created_at?: string
           full_name?: string | null
           id?: string
+          role?: Database["public"]["Enums"]["profile_role"]
           updated_at?: string
         }
         Relationships: []
+      }
+      signup_invitations: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          id: string
+          invited_by: string
+          note: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          invited_by?: string
+          note?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          invited_by?: string
+          note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signup_invitations_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -560,6 +598,7 @@ export type Database = {
         Args: { p_application: Json; p_opportunity: Json }
         Returns: string
       }
+      is_owner: { Args: never; Returns: boolean }
       owner_account_exists: { Args: never; Returns: boolean }
       update_opportunity_application: {
         Args: {
@@ -624,6 +663,7 @@ export type Database = {
         | "lessons_learned"
         | "follow_up"
         | "general"
+      profile_role: "owner" | "member"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -812,6 +852,7 @@ export const Constants = {
         "follow_up",
         "general",
       ],
+      profile_role: ["owner", "member"],
     },
   },
 } as const

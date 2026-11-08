@@ -11,7 +11,6 @@ import { ROUTE_PATHS } from '@/routes/routePaths'
 import { AuthLayout } from '../components/AuthLayout'
 import type { RedirectLocationState } from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
-import { useOwnerAccountExists } from '../hooks/useOwnerAccountExists'
 import { type LoginFormValues, loginSchema } from '../schemas/loginSchema'
 import { signInWithPassword } from '../services/auth.service'
 
@@ -24,10 +23,6 @@ function getSafeRedirectPath(state: unknown): string {
 
 export function LoginPage() {
   const { session, isLoading } = useAuth()
-  const { data: ownerAccountExists, isLoading: isOwnerCheckLoading } = useOwnerAccountExists()
-  // Hide the sign-up link only when an owner definitely exists. If the check fails,
-  // still offer it: the database itself rejects any account after the first.
-  const showSignUpLink = !isOwnerCheckLoading && ownerAccountExists !== true
   const location = useLocation()
   const navigate = useNavigate()
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -66,14 +61,12 @@ export function LoginPage() {
       title="Sign in to OpportunityHub"
       description="opportunities. applications. progress."
       footer={
-        showSignUpLink && (
-          <>
-            First time here?{' '}
-            <Link to={ROUTE_PATHS.SIGN_UP} className="font-medium text-primary underline-offset-4 hover:underline">
-              Create your account
-            </Link>
-          </>
-        )
+        <>
+          Don&apos;t have an account?{' '}
+          <Link to={ROUTE_PATHS.SIGN_UP} className="font-medium text-primary underline-offset-4 hover:underline">
+            Sign up
+          </Link>
+        </>
       }
     >
       <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
