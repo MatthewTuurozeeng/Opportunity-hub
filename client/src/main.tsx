@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client'
 
 import { ConfigurationErrorPage } from '@/components/shared/ConfigurationErrorPage'
 import { startCapturingInstallPrompt } from '@/features/pwa/hooks/installPrompt'
+import { startThemeSync } from '@/features/theme/themeStore'
 import { isEnvConfigured, missingEnvVariables } from '@/lib/env'
 import '@/styles/globals.css'
 
 // Before anything else renders: the browser may offer installation immediately.
 startCapturingInstallPrompt()
+startThemeSync()
 
 const rootElement = document.getElementById('root')
 

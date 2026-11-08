@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 
 import { AppMark } from '@/components/shared/AppMark'
+import { ThemeToggle } from '@/features/theme/components/ThemeToggle'
 import { ROUTE_PATHS } from '@/routes/routePaths'
 
 interface AuthLayoutProps {
@@ -15,7 +16,8 @@ interface AuthLayoutProps {
 /** Centered card layout shared by the sign-in and sign-up pages. */
 export function AuthLayout({ title, description, children, footer }: AuthLayoutProps) {
   return (
-    <main className="flex min-h-svh items-center justify-center px-4 py-10">
+    <main className="relative flex min-h-svh items-center justify-center px-4 py-10">
+      <ThemeToggle className="absolute top-3 right-3" />
       <div className="flex w-full max-w-sm flex-col gap-6">
         <header className="flex flex-col items-center gap-3 text-center">
           <Link

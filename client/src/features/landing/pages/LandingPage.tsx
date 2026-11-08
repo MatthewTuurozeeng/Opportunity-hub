@@ -19,6 +19,7 @@ import { Link } from 'react-router'
 import { AppMark } from '@/components/shared/AppMark'
 import { buttonVariants } from '@/components/ui/button'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { ThemeToggle } from '@/features/theme/components/ThemeToggle'
 import { cn } from '@/lib/utils'
 import { ROUTE_PATHS } from '@/routes/routePaths'
 
@@ -188,7 +189,10 @@ export function LandingPage() {
               </a>
             ))}
           </nav>
-          <AuthActions />
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <AuthActions />
+          </div>
         </div>
       </header>
 
@@ -289,7 +293,7 @@ export function LandingPage() {
         </section>
 
         {/* Privacy */}
-        <section id="privacy" aria-labelledby="privacy-heading" className="scroll-mt-20 bg-midnight-navy text-pure-white">
+        <section id="privacy" aria-labelledby="privacy-heading" className="scroll-mt-20 bg-midnight-navy text-pure-white dark:border-y dark:border-border dark:bg-card">
           <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
             <div className="mb-10 flex max-w-2xl flex-col gap-3">
               <h2 id="privacy-heading" className="text-3xl font-semibold tracking-tight text-pure-white">

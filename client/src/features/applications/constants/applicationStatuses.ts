@@ -57,7 +57,7 @@ export const APPLICATION_STATUS_DETAILS: Record<ApplicationStatus, ApplicationSt
   successful: {
     label: 'Successful',
     description: 'Application resulted in a positive outcome.',
-    badgeClassName: 'bg-success-green text-pure-white border-success-green',
+    badgeClassName: 'bg-success-green text-pure-white border-success-green dark:text-midnight-navy',
   },
   unsuccessful: {
     label: 'Unsuccessful',
