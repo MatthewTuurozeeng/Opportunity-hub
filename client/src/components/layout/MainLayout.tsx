@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router'
 
+import { OfflineBanner } from '@/features/pwa/components/OfflineBanner'
+
 import { AppHeader } from './AppHeader'
 import { AppSidebar } from './AppSidebar'
 
@@ -16,6 +18,7 @@ export function MainLayout() {
       <AppHeader />
       <main id="main-content" className="lg:pl-64">
         <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <OfflineBanner />
           <Outlet />
         </div>
       </main>
