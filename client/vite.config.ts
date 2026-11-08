@@ -11,12 +11,17 @@ export default defineConfig({
     // Fixed port so it always matches the Supabase Site URL / redirect URLs.
     port: 5173,
     strictPort: true,
-    // Open the app in the system's default browser on `npm run dev`.
-    open: true,
+    // Open the app in the system's default browser on `npm run dev` (not during end-to-end tests).
+    open: process.env.PLAYWRIGHT !== '1',
   },
   test: {
+    // Logic tests run in Node. Component tests opt in to a browser-like DOM
+    // with a `// @vitest-environment jsdom` comment at the top of the file.
     environment: 'node',
     include: ['src/**/*.test.{ts,tsx}'],
+    // Playwright specs in e2e/ use their own runner.
+    exclude: ['e2e/**', 'node_modules/**'],
+    setupFiles: ['src/test/setup.ts'],
   },
   resolve: {
     alias: {
