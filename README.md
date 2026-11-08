@@ -41,7 +41,7 @@ The primary objectives are to:
 
 ## 1.4 Target User
 
-The initial version is designed for one individual: the owner of the platform.
+The platform belongs to one individual: the owner. The owner can invite other people to create their own accounts; each account is completely private, and accounts never share data.
 
 It is not intended to be a multi-user collaboration system or a public opportunity-discovery platform.
 
@@ -585,7 +585,7 @@ Prioritize information hierarchy and task completion.
 | Zod | Form and data validation. |
 | TanStack Query | Server-state management and data fetching. |
 | Recharts | Dashboard and analytics charts. |
-| FullCalendar | Calendar functionality. |
+| Custom calendar components | Month and agenda views, built in-house for a smaller bundle, consistent styling and full keyboard support. |
 
 ## Backend and Database
 
