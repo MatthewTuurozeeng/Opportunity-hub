@@ -2,10 +2,9 @@
 -- Row Level Security: a signed-in user can reach only their own rows, and a
 -- signed-out visitor can reach nothing.
 --
--- The app allows a single owner, so a second account can never exist in
--- production. To prove isolation anyway, this test briefly switches off the
--- single-owner guard to create an "intruder" account. Everything runs in one
--- transaction that is rolled back at the end.
+-- The owner invites a second account (the "intruder"), which must still be
+-- unable to reach any of the owner's data. Everything runs in one transaction
+-- that is rolled back at the end.
 -- =============================================================================
 
 begin;
@@ -16,22 +15,11 @@ select no_plan();
 -- Fixtures (written as the postgres role, which owns these tables, so RLS does not apply)
 -- -----------------------------------------------------------------------------
 
--- auth.users belongs to Supabase's auth service, so its triggers cannot be
--- disabled here. Instead, make the single-owner guard a no-op for this
--- transaction only; the rollback at the end restores the real function.
-create or replace function public.prevent_additional_users()
-returns trigger
-language plpgsql
-set search_path = ''
-as $$
-begin
-  return new;
-end;
-$$;
-
-insert into auth.users (id, email) values
-  ('11111111-1111-1111-1111-111111111111', 'owner@example.test'),
-  ('22222222-2222-2222-2222-222222222222', 'intruder@example.test');
+-- The first account becomes the owner; the second signs up through an invitation.
+insert into auth.users (id, email) values ('11111111-1111-1111-1111-111111111111', 'owner@example.test');
+insert into public.signup_invitations (email, invited_by)
+values ('intruder@example.test', '11111111-1111-1111-1111-111111111111');
+insert into auth.users (id, email) values ('22222222-2222-2222-2222-222222222222', 'intruder@example.test');
 
 insert into public.opportunities (id, user_id, title, organization)
 values ('a0000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', 'Owner fellowship', 'Acme');
@@ -191,6 +179,22 @@ select throws_ok(
   'intruder cannot upload into the owner''s storage folder'
 );
 
+-- Members cannot see or manage invitations, or promote themselves.
+select is_empty('select id from public.signup_invitations', 'a member cannot read the invitation list');
+select throws_ok(
+  $$ insert into public.signup_invitations (email) values ('friend@example.test') $$,
+  '42501',
+  null,
+  'a member cannot invite anyone'
+);
+select throws_ok(
+  $$ update public.profiles set role = 'owner' $$,
+  '42501',
+  null,
+  'a member cannot change their own role'
+);
+select is(public.is_owner(), false, 'the intruder is a member, not the owner');
+
 -- -----------------------------------------------------------------------------
 -- Signed in as the owner: their data is all there (RLS is not simply blocking everything)
 -- -----------------------------------------------------------------------------
@@ -207,6 +211,8 @@ select is((select title from public.opportunities), 'Owner fellowship', 'owner''
 select is((select status::text from public.applications), 'draft', 'owner''s application is unchanged');
 select is((select count(*)::int from public.documents), 1, 'owner''s document still exists');
 select is((select count(*)::int from public.notes), 1, 'owner''s note still exists');
+select is(public.is_owner(), true, 'the first account is the owner');
+select is((select count(*)::int from public.signup_invitations), 1, 'the owner can see their invitations');
 select is(
   (select count(*)::int from storage.objects where bucket_id = 'documents'),
   1,
@@ -229,6 +235,12 @@ select set_config('request.jwt.claims', '{"role": "anon"}', true);
 select throws_ok('select id from public.opportunities', '42501', null, 'signed-out visitors cannot read opportunities');
 select throws_ok('select id from public.documents', '42501', null, 'signed-out visitors cannot read documents');
 select throws_ok('select id from public.notes', '42501', null, 'signed-out visitors cannot read notes');
+select throws_ok(
+  'select id from public.signup_invitations',
+  '42501',
+  null,
+  'signed-out visitors cannot read invitations'
+);
 select is_empty(
   $$ select id from storage.objects where bucket_id = 'documents' $$,
   'signed-out visitors cannot see stored files'

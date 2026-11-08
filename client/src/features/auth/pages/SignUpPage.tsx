@@ -64,10 +64,6 @@ export function SignUpPage() {
     )
   }
 
-  // OpportunityHub has a single owner; once that account exists, sign-up is closed.
-  if (ownerAccountExists) {
-    return <Navigate to={ROUTE_PATHS.LOGIN} replace />
-  }
 
   async function onSubmit(values: SignUpFormValues) {
     setSubmitError(null)
@@ -88,7 +84,11 @@ export function SignUpPage() {
   return (
     <AuthLayout
       title="Create your account"
-      description="Set up the owner account for your OpportunityHub."
+      description={
+        ownerAccountExists
+          ? 'OpportunityHub is invite-only. Sign up with the email address you were invited with.'
+          : 'Set up the owner account for your OpportunityHub.'
+      }
       footer={
         <>
           Already have an account?{' '}

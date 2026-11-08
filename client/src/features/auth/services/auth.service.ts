@@ -20,8 +20,9 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
   email_address_invalid: 'Enter a valid email address.',
   email_address_not_authorized: 'This email address cannot be used. Try another one.',
   reauthentication_needed: 'For security, sign out and sign in again, then retry.',
-  // The database rejects every account after the owner's (single-owner rule).
-  unexpected_failure: 'An owner account already exists. Sign in instead.',
+  // The database rejects sign-ups from addresses the owner has not invited.
+  unexpected_failure:
+    'This email address has not been invited. Use the address your invitation was sent to, or ask the owner for an invitation.',
 }
 
 function toFriendlyError(error: { code?: string }): Error {
