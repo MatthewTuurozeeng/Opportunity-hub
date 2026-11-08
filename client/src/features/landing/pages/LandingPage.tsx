@@ -331,14 +331,14 @@ export function LandingPage() {
         <p className="flex items-center gap-2">
           <AppMark className="size-5" />© {CURRENT_YEAR} OpportunityHub
         </p>
-        <nav aria-label="Footer" className="flex gap-4">
+        {/* <nav aria-label="Footer" className="flex gap-4">
           <Link to={ROUTE_PATHS.LOGIN} className="hover:text-foreground hover:underline">
             Sign in
           </Link>
           <Link to={ROUTE_PATHS.SIGN_UP} className="hover:text-foreground hover:underline">
             Sign up
           </Link>
-        </nav>
+        </nav> */}
       </footer>
     </div>
   )
