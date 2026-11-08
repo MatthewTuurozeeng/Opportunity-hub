@@ -15,6 +15,11 @@ export type ApplicationRecord = Tables<'applications'> & {
 
 export type StatusHistoryEntry = Tables<'application_status_history'>
 
+/** A status change with the opportunity it belongs to, for activity feeds. */
+export type RecentStatusChange = StatusHistoryEntry & {
+  application: { id: string; opportunity: Pick<Tables<'opportunities'>, 'title' | 'organization'> }
+}
+
 export const APPLICATION_SORT_OPTIONS = ['updated_desc', 'deadline_asc', 'submitted_desc', 'created_desc'] as const
 export type ApplicationSortOption = (typeof APPLICATION_SORT_OPTIONS)[number]
 

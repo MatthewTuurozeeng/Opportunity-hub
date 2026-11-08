@@ -16,7 +16,7 @@ import { APPLICATION_QUERY_KEYS } from './applicationQueryKeys'
 
 /**
  * Every write can change lists, details and history, so refresh all application data.
- * Communication lists show each application's title, so refresh them too.
+ * Communication and event lists show each application's title, so refresh them too.
  */
 function useInvalidateApplications() {
   const queryClient = useQueryClient()
@@ -24,6 +24,7 @@ function useInvalidateApplications() {
     Promise.all([
       queryClient.invalidateQueries({ queryKey: APPLICATION_QUERY_KEYS.all }),
       queryClient.invalidateQueries({ queryKey: COMMUNICATION_QUERY_KEYS.all }),
+      queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEYS.all }),
     ])
 }
 

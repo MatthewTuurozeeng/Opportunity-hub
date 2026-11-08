@@ -1,7 +1,12 @@
 import { supabase } from '@/lib/supabase'
 
 import type { ApplicationStatus } from '../constants/applicationStatuses'
-import type { ApplicationPayload, ApplicationRecord, StatusHistoryEntry } from '../types/application.types'
+import type {
+  ApplicationPayload,
+  ApplicationRecord,
+  RecentStatusChange,
+  StatusHistoryEntry,
+} from '../types/application.types'
 
 const APPLICATION_SELECT = '*, opportunity:opportunities!inner(*, category:categories(id, name))'
 
@@ -46,6 +51,35 @@ export async function listApplicationStatusHistory(applicationId: string): Promi
 
   if (error) {
     throw new Error('Unable to load the status history.')
+  }
+
+  return data
+}
+
+/** Ids of applications whose status history includes the Interview stage. */
+export async function listInterviewApplicationIds(): Promise<Set<string>> {
+  const { data, error } = await supabase
+    .from('application_status_history')
+    .select('application_id')
+    .eq('new_status', 'interview')
+
+  if (error) {
+    throw new Error('Unable to load interview statistics.')
+  }
+
+  return new Set(data.map((entry) => entry.application_id))
+}
+
+/** The latest status changes across all applications, newest first. */
+export async function listRecentStatusChanges(limit: number): Promise<RecentStatusChange[]> {
+  const { data, error } = await supabase
+    .from('application_status_history')
+    .select('*, application:applications!inner(id, opportunity:opportunities!inner(title, organization))')
+    .order('changed_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    throw new Error('Unable to load recent activity.')
   }
 
   return data
