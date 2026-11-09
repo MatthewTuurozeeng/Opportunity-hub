@@ -108,7 +108,7 @@ export function DashboardPage() {
         <EmptyState
           icon={LayoutDashboard}
           title="No applications yet"
-          description="Add your first opportunity to start tracking deadlines, progress and outcomes."
+          description="Add your first opportunity to start tracking progress and outcomes."
           action={<AddApplicationButton />}
         />
       )
@@ -193,7 +193,7 @@ export function DashboardPage() {
     <>
       <PageHeader
         title="Dashboard"
-        description="Welcome back. Here is where your applications stand."
+        description="Here is where your applications stand."
         actions={quickActions}
       />
       {renderContent()}

@@ -178,7 +178,7 @@ export function CalendarPage() {
     <>
       <PageHeader
         title="Calendar & Timeline"
-        description="View deadlines, interviews and other important dates."
+        description="View important dates."
         actions={
           <Button size="lg" onClick={() => actions.openNewEvent(selectedDayKey)}>
             <CalendarPlus aria-hidden="true" />

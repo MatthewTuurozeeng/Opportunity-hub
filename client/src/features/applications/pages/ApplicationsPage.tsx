@@ -40,7 +40,7 @@ export function ApplicationsPage() {
         <EmptyState
           icon={Briefcase}
           title="No applications yet"
-          description="Record an opportunity now and apply when you are ready. Drafts are not counted as submitted."
+          description="Record an opportunity now and apply when you are ready."
           action={<AddApplicationButton />}
         />
       )
@@ -70,7 +70,7 @@ export function ApplicationsPage() {
     <>
       <PageHeader
         title="Applications"
-        description="Manage all your opportunities and applications."
+        description="Manage all your applications."
         actions={applications?.length ? <AddApplicationButton /> : undefined}
       />
       {renderContent()}

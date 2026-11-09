@@ -117,7 +117,7 @@ export function DocumentsPage() {
     <>
       <PageHeader
         title="Document Library"
-        description="Store, organize and reuse your application documents."
+        description="Store and organize your application documents."
         actions={groups.length ? uploadButton : undefined}
       />
       {renderContent()}
